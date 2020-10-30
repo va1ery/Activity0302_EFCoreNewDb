@@ -4,14 +4,16 @@ using InventoryDatabaseCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InventoryDatabaseCore.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class InventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201030164202_updateItem_addSoftDeleteKeyAndRequiredName")]
+    partial class updateItem_addSoftDeleteKeyAndRequiredName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,66 +21,12 @@ namespace InventoryDatabaseCore.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("InventoryModels.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CategoryColorId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CreatedByUserId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("LastModifiedUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("InventoryModels.CategoryColor", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ColorValue")
-                        .HasColumnType("nvarchar(7)")
-                        .HasMaxLength(7);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CategoryColors");
-                });
-
             modelBuilder.Entity("InventoryModels.Item", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
@@ -131,25 +79,7 @@ namespace InventoryDatabaseCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Items");
-                });
-
-            modelBuilder.Entity("InventoryModels.CategoryColor", b =>
-                {
-                    b.HasOne("InventoryModels.Category", "Category")
-                        .WithOne("CategoryColor")
-                        .HasForeignKey("InventoryModels.CategoryColor", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("InventoryModels.Item", b =>
-                {
-                    b.HasOne("InventoryModels.Category", "Category")
-                        .WithMany("Items")
-                        .HasForeignKey("CategoryId");
                 });
 #pragma warning restore 612, 618
         }

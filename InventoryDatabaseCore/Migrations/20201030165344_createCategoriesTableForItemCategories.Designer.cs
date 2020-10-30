@@ -4,14 +4,16 @@ using InventoryDatabaseCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InventoryDatabaseCore.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class InventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201030165344_createCategoriesTableForItemCategories")]
+    partial class createCategoriesTableForItemCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,9 +27,6 @@ namespace InventoryDatabaseCore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CategoryColorId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("CreatedByUserId")
                         .HasColumnType("int");
@@ -54,20 +53,6 @@ namespace InventoryDatabaseCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("InventoryModels.CategoryColor", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ColorValue")
-                        .HasColumnType("nvarchar(7)")
-                        .HasMaxLength(7);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CategoryColors");
                 });
 
             modelBuilder.Entity("InventoryModels.Item", b =>
@@ -134,15 +119,6 @@ namespace InventoryDatabaseCore.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Items");
-                });
-
-            modelBuilder.Entity("InventoryModels.CategoryColor", b =>
-                {
-                    b.HasOne("InventoryModels.Category", "Category")
-                        .WithOne("CategoryColor")
-                        .HasForeignKey("InventoryModels.CategoryColor", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("InventoryModels.Item", b =>

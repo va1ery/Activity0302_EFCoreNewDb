@@ -12,6 +12,7 @@ namespace InventoryDatabaseCore
         public DbSet<Item> Items { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<CategoryColor> CategoryColors { get; set; }
+        public DbSet<Genre> Genres { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -53,6 +54,14 @@ namespace InventoryDatabaseCore
         public InventoryDbContext(DbContextOptions options)
         : base(options)
         {
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //unique, non-clustered index for ItemGenre relationships
+            modelBuilder.Entity<ItemGenre>()
+            .HasIndex(ig => new { ig.ItemId, ig.GenreId })
+            .IsUnique()
+            .IsClustered(false);
         }
     }
 }
